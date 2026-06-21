@@ -3,20 +3,26 @@
 // ════════════════════════════════════════════════════════════
 import { db } from './firebase-config.js';
 import { ref, push, set, onValue, get } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
-import { canCreateAgency, ROLES } from './roles.js';
+import { canCreateAgency, canViewAllAgencies, ROLES } from './roles.js';
 
 let currentUserRole = null;
 let currentUserUid  = null;
+let currentUserAgencyId  = null;  // agence unique (Chef d'agence, Agent, Technicien, Opérateur)
+let currentUserAgencyIds = [];    // plusieurs agences possibles (Superviseur)
 let agenciesCache = {};
 let onOpenAgency = () => {};
 
 export function setOnOpenAgency(fn) { onOpenAgency = fn; }
 
-export function initAgencies(role, uid) {
-  currentUserRole = role;
+// profile = { role, agencyId, agencyIds } du compte connecté
+export function initAgencies(profile, uid) {
+  currentUserRole = profile.role;
   currentUserUid  = uid;
+  currentUserAgencyId  = profile.agencyId || null;
+  currentUserAgencyIds = profile.agencyIds || (profile.agencyId ? [profile.agencyId] : []);
+
   document.getElementById('btnNewAgency').style.display =
-    canCreateAgency(role) ? 'flex' : 'none';
+    canCreateAgency(currentUserRole) ? 'flex' : 'none';
   listenAgencies();
 }
 
@@ -28,18 +34,25 @@ function listenAgencies() {
   });
 }
 
+function visibleAgencyEntries() {
+  const entries = Object.entries(agenciesCache);
+
+  // Admin / Testeur / Contrôleur / Superviseur-sans-restriction explicite : tout voir
+  if (canViewAllAgencies(currentUserRole)) return entries;
+
+  // Tous les autres rôles (Chef d'agence, Agent, Technicien, Opérateur,
+  // et Superviseur s'il est un jour exclu de canViewAllAgencies) :
+  // ne voient que les agences explicitement listées dans leur profil.
+  const allowed = new Set(currentUserAgencyIds.length ? currentUserAgencyIds : (currentUserAgencyId ? [currentUserAgencyId] : []));
+  return entries.filter(([id]) => allowed.has(id));
+}
+
 function renderAgencyList() {
   const list = document.getElementById('agencyList');
   const empty = document.getElementById('agencyEmpty');
   list.innerHTML = '';
 
-  // Chef d'agence ne voit que son agence assignée ; les autres rôles
-  // habilités voient tout (logique posée dès maintenant pour éviter
-  // une restructuration plus tard).
-  let entries = Object.entries(agenciesCache);
-  if (currentUserRole === ROLES.CHEF_AGENCE) {
-    entries = entries.filter(([id]) => true); // affiné quand l'agencyId du chef sera branché
-  }
+  const entries = visibleAgencyEntries();
 
   if (!entries.length) {
     empty.style.display = 'block';
@@ -84,6 +97,16 @@ export async function createAgency(name) {
     createdBy: currentUserUid,
     createdAt: Date.now()
   });
+
+  // Si le créateur est un Superviseur (vision restreinte à ses propres
+  // agences), on l'y rattache automatiquement, sinon il ne verrait pas
+  // l'agence qu'il vient lui-même de créer.
+  if (currentUserRole === ROLES.SUPERVISEUR) {
+    const updatedIds = Array.from(new Set([...currentUserAgencyIds, newRef.key]));
+    currentUserAgencyIds = updatedIds;
+    await set(ref(db, 'users/' + currentUserUid + '/agencyIds'), updatedIds);
+  }
+
   return newRef.key;
 }
 
