@@ -97,7 +97,8 @@
     </div>
   </div>
 
-  <div class="shell-content">
+  <!-- ── Écran Agences ── -->
+  <div class="shell-content" id="agenciesScreen">
     <div class="section-header">
       <div>
         <div class="section-title">Agences</div>
@@ -119,6 +120,39 @@
       <p>Créez votre première agence pour commencer à organiser bases et clients.</p>
     </div>
   </div>
+
+  <!-- ── Écran Comptes en attente ── -->
+  <div class="shell-content" id="pendingScreen" style="display:none">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Comptes en attente</div>
+        <div class="section-sub">Attribuez un rôle pour activer chaque compte</div>
+      </div>
+    </div>
+
+    <div id="pendingList" class="q-list"></div>
+
+    <div id="pendingEmpty" class="shell-empty-state">
+      <div class="icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h3>Aucun compte en attente</h3>
+      <p>Tous les comptes créés ont déjà un rôle attribué.</p>
+    </div>
+  </div>
+
+  <!-- ── Navigation basse ── -->
+  <div class="bottom-nav">
+    <button class="bottom-nav-item active" id="navAgenciesBtn" onclick="showAgenciesScreen()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+      <span>Agences</span>
+    </button>
+    <button class="bottom-nav-item" id="navUsersBtn" onclick="showPendingScreen()" style="display:none; position:relative">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Comptes</span>
+      <span id="pendingBadge" style="display:none; position:absolute; top:-2px; right:18px; background:var(--alert); color:white; font-size:0.62rem; font-weight:700; min-width:16px; height:16px; border-radius:8px; align-items:center; justify-content:center; padding:0 4px;"></span>
+    </button>
+  </div>
 </div>
 
 <!-- ══════════ MODAL — Nouvelle agence ══════════ -->
@@ -135,6 +169,35 @@
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeAgencyModal()">Annuler</button>
       <button class="btn btn-primary" id="agencyModalSubmit" onclick="submitNewAgency()" style="margin-top:0">Créer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MODAL — Attribuer un rôle ══════════ -->
+<div class="modal-overlay" id="assignModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Attribuer un rôle</div>
+    <div class="assign-person">
+      <div class="assign-person-name" id="assignName">—</div>
+      <div class="assign-person-email" id="assignEmail">—</div>
+    </div>
+
+    <div class="field" style="margin-top:6px">
+      <label>Rôle</label>
+      <div class="role-options" id="roleOptions"></div>
+    </div>
+
+    <div class="field" id="assignAgencyField" style="display:none">
+      <label>Agence de rattachement</label>
+      <select id="assignAgencySelect"></select>
+    </div>
+
+    <span class="field-error" id="assignError" style="display:none"></span>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeAssignModal()">Annuler</button>
+      <button class="btn btn-primary" id="assignSubmitBtn" onclick="submitAssignRole()" style="margin-top:0">Activer le compte</button>
     </div>
   </div>
 </div>
