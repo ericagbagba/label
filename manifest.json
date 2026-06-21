@@ -1,0 +1,18 @@
+{
+  "name": "BIT — Gestion d'entreprise",
+  "short_name": "BIT",
+  "description": "Application de gestion d'entreprise : agences, bases, clients, pannes, stocks",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F7F8FA",
+  "theme_color": "#13233B",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='32' fill='%2313233B'/><rect x='76' y='76' width='40' height='40' rx='10' fill='%232563EB'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
