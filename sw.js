@@ -9,6 +9,7 @@ const FILES_TO_CACHE = [
   './js/roles.js',
   './js/auth.js',
   './js/agences.js',
+  './js/users.js',
   './js/app.js'
 ];
 
