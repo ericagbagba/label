@@ -14,7 +14,12 @@ export const ROLES = {
   OPERATEUR:    'operateur',
   TECHNICIEN:   'technicien',
   AGENT:        'agent',      // agent terrain — saisie clients (rôle actif dès maintenant)
-  PENDING:      'pending'     // compte créé, en attente d'attribution de rôle par un admin
+  PENDING:      'pending',    // compte créé, en attente d'attribution de rôle par un admin
+
+  // ⚠️ RÔLE TEMPORAIRE DE TEST — accès total à tout, comme l'admin.
+  // À retirer avant la mise en production réelle. Sert uniquement
+  // à tester chaque écran/fonction pendant le développement.
+  TESTEUR:      'testeur_dev'
 };
 
 export const ROLE_LABELS = {
@@ -25,14 +30,15 @@ export const ROLE_LABELS = {
   [ROLES.OPERATEUR]:   'Opérateur',
   [ROLES.TECHNICIEN]:  'Technicien',
   [ROLES.AGENT]:       'Agent terrain',
-  [ROLES.PENDING]:     'En attente'
+  [ROLES.PENDING]:     'En attente',
+  [ROLES.TESTEUR]:     '🧪 Testeur (accès total)'
 };
 
 // Qui peut créer une agence
-export const CAN_CREATE_AGENCY = [ROLES.ADMIN, ROLES.SUPERVISEUR];
+export const CAN_CREATE_AGENCY = [ROLES.ADMIN, ROLES.SUPERVISEUR, ROLES.TESTEUR];
 
 // Qui voit toutes les agences (vs seulement la sienne)
-export const CAN_VIEW_ALL_AGENCIES = [ROLES.ADMIN, ROLES.SUPERVISEUR, ROLES.CONTROLEUR];
+export const CAN_VIEW_ALL_AGENCIES = [ROLES.ADMIN, ROLES.SUPERVISEUR, ROLES.CONTROLEUR, ROLES.TESTEUR];
 
 export function canCreateAgency(role) {
   return CAN_CREATE_AGENCY.includes(role);
@@ -44,4 +50,10 @@ export function canViewAllAgencies(role) {
 
 export function roleLabel(role) {
   return ROLE_LABELS[role] || role;
+}
+
+// Pratique pour activer/désactiver rapidement tout le reste du code
+// sans avoir à dupliquer "role === ROLES.ADMIN || role === ROLES.TESTEUR" partout.
+export function isFullAccess(role) {
+  return role === ROLES.ADMIN || role === ROLES.TESTEUR;
 }
