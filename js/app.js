@@ -3,7 +3,8 @@
 // ════════════════════════════════════════════════════════════
 import { setOnAuthReady, handleSubmit, handleLogout, toggleMode, checkFirstLaunch } from './auth.js';
 import { initAgencies, setOnOpenAgency, createAgency } from './agences.js';
-import { roleLabel } from './roles.js';
+import { initUsers } from './users.js';
+import { roleLabel, canManageUsers } from './roles.js';
 
 // Expose functions needed by inline onclick= handlers in index.html
 window.handleSubmit = handleSubmit;
@@ -41,6 +42,24 @@ setOnOpenAgency((id, agency) => {
   alert('Agence : ' + agency.name + '\n\n(Écran détail / bases à venir dans la prochaine étape)');
 });
 
+// ── NAVIGATION : Agences ⇄ Comptes en attente ──
+window.showAgenciesScreen = function() {
+  document.getElementById('agenciesScreen').style.display = 'block';
+  document.getElementById('pendingScreen').style.display = 'none';
+  setNavActive('navAgenciesBtn');
+};
+window.showPendingScreen = function() {
+  document.getElementById('agenciesScreen').style.display = 'none';
+  document.getElementById('pendingScreen').style.display = 'block';
+  setNavActive('navUsersBtn');
+};
+function setNavActive(activeId) {
+  ['navAgenciesBtn','navUsersBtn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', id === activeId);
+  });
+}
+
 setOnAuthReady(({ user, profile }) => {
   if (user && profile) {
     showAppShell(user, profile);
@@ -63,7 +82,15 @@ function showAppShell(user, profile) {
   document.getElementById('shellUserName').textContent = profile.name || user.email;
   document.getElementById('shellUserRole').textContent = roleLabel(profile.role);
 
-  initAgencies(profile.role, user.uid);
+  initAgencies(profile, user.uid);
+
+  if (canManageUsers(profile.role)) {
+    initUsers(profile.role);
+  } else {
+    document.getElementById('navUsersBtn').style.display = 'none';
+  }
+
+  window.showAgenciesScreen();
 }
 
 // Initial check on cold load (before any auth state event fires)
