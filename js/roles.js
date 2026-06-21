@@ -37,8 +37,10 @@ export const ROLE_LABELS = {
 // Qui peut créer une agence
 export const CAN_CREATE_AGENCY = [ROLES.ADMIN, ROLES.SUPERVISEUR, ROLES.TESTEUR];
 
-// Qui voit toutes les agences (vs seulement la sienne)
-export const CAN_VIEW_ALL_AGENCIES = [ROLES.ADMIN, ROLES.SUPERVISEUR, ROLES.CONTROLEUR, ROLES.TESTEUR];
+// Qui voit TOUTES les agences sans restriction (vision globale).
+// Le Superviseur N'EST PAS ici : il crée des agences mais ne voit ensuite
+// que celles auxquelles il est explicitement rattaché (agencyIds).
+export const CAN_VIEW_ALL_AGENCIES = [ROLES.ADMIN, ROLES.CONTROLEUR, ROLES.TESTEUR];
 
 export function canCreateAgency(role) {
   return CAN_CREATE_AGENCY.includes(role);
@@ -57,3 +59,23 @@ export function roleLabel(role) {
 export function isFullAccess(role) {
   return role === ROLES.ADMIN || role === ROLES.TESTEUR;
 }
+
+// Qui peut gérer les comptes en attente et attribuer des rôles
+export function canManageUsers(role) {
+  return role === ROLES.ADMIN || role === ROLES.TESTEUR;
+}
+
+// Rôles qui nécessitent obligatoirement une agence de rattachement
+export const ROLES_REQUIRING_AGENCY = [
+  ROLES.SUPERVISEUR, ROLES.CHEF_AGENCE, ROLES.OPERATEUR, ROLES.TECHNICIEN, ROLES.AGENT
+];
+export function roleRequiresAgency(role) {
+  return ROLES_REQUIRING_AGENCY.includes(role);
+}
+
+// Rôles assignables par l'admin depuis l'écran "comptes en attente"
+// (on exclut PENDING et TESTEUR qui ne se choisissent pas manuellement)
+export const ASSIGNABLE_ROLES = [
+  ROLES.ADMIN, ROLES.CONTROLEUR, ROLES.SUPERVISEUR,
+  ROLES.CHEF_AGENCE, ROLES.OPERATEUR, ROLES.TECHNICIEN, ROLES.AGENT
+];
