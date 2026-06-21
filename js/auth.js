@@ -113,9 +113,19 @@ export async function handleSubmit() {
       await signInWithEmailAndPassword(auth, email, pass);
     } else {
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      await updateProfile(cred.user, { displayName: name });
 
-      const role = isFirstAdminSetup ? ROLES.ADMIN : ROLES.PENDING;
+      // IMPORTANT : createUserWithEmailAndPassword connecte l'utilisateur
+      // immédiatement, ce qui déclenche onAuthStateChanged EN PARALLÈLE.
+      // On doit donc écrire le profil et le drapeau admin dans la base
+      // AVANT que cet événement ne soit traité, sinon la lecture du profil
+      // arrive trop tôt et trouve la base encore vide.
+      //
+      // ⚠️ Le tout premier compte créé reçoit le rôle TESTEUR (accès total,
+      // identique à admin) le temps du développement — à remplacer par
+      // ROLES.ADMIN strict avant la mise en production réelle.
+      const role = isFirstAdminSetup ? ROLES.TESTEUR : ROLES.PENDING;
+
+      await updateProfile(cred.user, { displayName: name });
       await set(ref(db, 'users/' + cred.user.uid), {
         name, email, role,
         agencyId: null,
@@ -151,10 +161,18 @@ export async function handleLogout() {
 }
 
 // ── Fetch the current user's profile (role, agencyId, name) from the database ──
-export async function fetchUserProfile(uid) {
+// Réessaie brièvement si le profil n'est pas encore visible : juste après une
+// création de compte, onAuthStateChanged peut se déclencher avant que l'écriture
+// du profil dans la base ne soit complètement propagée.
+export async function fetchUserProfile(uid, attempt = 1) {
   try {
     const snap = await get(ref(db, 'users/' + uid));
-    return snap.exists() ? snap.val() : null;
+    if (snap.exists()) return snap.val();
+    if (attempt < 5) {
+      await new Promise(r => setTimeout(r, 300));
+      return fetchUserProfile(uid, attempt + 1);
+    }
+    return null;
   } catch (e) {
     return null;
   }
