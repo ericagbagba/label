@@ -210,3 +210,41 @@ body {
   color: var(--muted); font-size: 0.65rem; font-weight: 600; padding: 6px; cursor:pointer;
 }
 .bottom-nav-item.active { color: var(--signal); }
+
+/* ── PENDING ACCOUNTS ── */
+.pending-card {
+  display:flex; align-items:center; gap:13px; background: white; border: 1.5px solid var(--line);
+  border-radius: 16px; padding: 13px 15px; cursor:pointer; transition: border-color 0.15s, transform 0.1s;
+  margin-bottom: 10px;
+}
+.pending-card:active { transform: scale(0.99); }
+.pending-card:hover { border-color: var(--alert); }
+.pending-card-avatar {
+  width: 38px; height: 38px; border-radius: 50%; background: var(--alert-soft); color: var(--alert);
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem; flex-shrink:0;
+}
+.pending-card-body { flex:1; min-width:0; }
+.pending-card-name { font-weight: 600; font-size: 0.92rem; color: var(--ink); }
+.pending-card-email { font-size: 0.78rem; color: var(--muted); margin-top:1px; }
+
+/* ── ASSIGN MODAL ── */
+.assign-person {
+  background: var(--paper); border-radius: 12px; padding: 12px 14px; margin-bottom: 18px;
+}
+.assign-person-name { font-weight: 700; font-size: 0.95rem; color: var(--ink); }
+.assign-person-email { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+.role-options { display:flex; flex-wrap:wrap; gap: 8px; margin-bottom: 4px; }
+.role-chip {
+  border: 1.5px solid var(--line); background: white; color: var(--ink);
+  border-radius: 20px; padding: 8px 14px; font-size: 0.82rem; font-weight: 600;
+  cursor:pointer; transition: all 0.15s;
+}
+.role-chip:hover { border-color: var(--signal); }
+.role-chip.selected { background: var(--signal); border-color: var(--signal); color: white; }
+
+#assignAgencySelect {
+  width:100%; border: 1.5px solid var(--line); border-radius: 12px; padding: 13px 14px;
+  font-size: 0.92rem; font-family: var(--font-body); background: var(--white); color: var(--ink); outline:none;
+}
+#assignAgencySelect:focus { border-color: var(--signal); }
