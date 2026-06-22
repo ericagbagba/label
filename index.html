@@ -36,7 +36,6 @@
       <line x1="320" y1="84" x2="284" y2="111" stroke="#0F9D6B" stroke-width="1.2" opacity="0.13"/>
     </svg>
   </div>
-
   <div class="brand">
     <div class="brand-mark"></div>
     <div>
@@ -44,18 +43,14 @@
       <div class="brand-tag">GESTION D'ENTREPRISE</div>
     </div>
   </div>
-
   <div class="auth-card">
     <div id="setupBadge" class="setup-badge" style="display:none">
       <span class="dot"></span> Première connexion — créez le compte administrateur
     </div>
-
     <span class="auth-eyebrow" id="authEyebrow">Connexion</span>
     <h1 class="auth-title" id="authTitle">Bon retour</h1>
     <p class="auth-sub" id="authSub">Connectez-vous pour accéder à votre espace.</p>
-
     <div class="auth-banner" id="authBanner"></div>
-
     <form id="authForm" onsubmit="return false">
       <div class="field" id="nameField" style="display:none">
         <label>Nom complet</label>
@@ -76,7 +71,6 @@
         <span class="btn-label" id="submitLabel">Se connecter</span>
       </button>
     </form>
-
     <div class="auth-switch" id="authSwitch" style="display:none">
       Pas encore de compte ? <button onclick="toggleMode()">Créer un accès</button>
     </div>
@@ -84,7 +78,9 @@
 </div>
 
 <!-- ══════════ APP SHELL ══════════ -->
-<div id="appShell">
+<div id="appShell" style="display:none">
+
+  <!-- Top bar -->
   <div class="shell-topbar">
     <div class="shell-topbar-row">
       <div>
@@ -97,7 +93,7 @@
     </div>
   </div>
 
-  <!-- ── Écran Agences ── -->
+  <!-- ══ ÉCRAN AGENCES ══ -->
   <div class="shell-content" id="agenciesScreen">
     <div class="section-header">
       <div>
@@ -109,9 +105,7 @@
         Nouvelle agence
       </button>
     </div>
-
     <div id="agencyList"></div>
-
     <div id="agencyEmpty" class="shell-empty-state">
       <div class="icon-wrap">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
@@ -121,7 +115,170 @@
     </div>
   </div>
 
-  <!-- ── Écran Comptes en attente ── -->
+  <!-- ══ ÉCRAN BASES ══ -->
+  <div class="shell-content" id="basesScreen" style="display:none">
+    <div class="section-header">
+      <div class="breadcrumb" onclick="backToAgencies()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Agences
+      </div>
+      <div>
+        <div class="section-title" id="basesAgencyTitle">—</div>
+        <div class="section-sub">Bases de cette agence</div>
+      </div>
+      <button class="fab-btn" id="btnNewBase" onclick="openNewBaseModal()" style="display:none">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        Nouvelle base
+      </button>
+    </div>
+    <div id="baseList"></div>
+    <div id="baseEmpty" class="shell-empty-state">
+      <div class="icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+      </div>
+      <h3>Aucune base pour l'instant</h3>
+      <p>Créez la première base de cette agence.</p>
+    </div>
+  </div>
+
+  <!-- ══ ÉCRAN CLIENTS ══ -->
+  <div class="shell-content" id="clientsScreen" style="display:none">
+    <!-- Header -->
+    <div class="section-header">
+      <div class="breadcrumb" onclick="backToBases()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        <span id="clientsAgencyLabel">—</span>
+      </div>
+      <div>
+        <div class="section-title" id="clientsBaseTitle">—</div>
+        <div class="section-sub">Clients enregistrés</div>
+      </div>
+      <button class="fab-btn" id="btnNewClient" onclick="openNewClientModal()" style="display:none">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        Nouveau client
+      </button>
+    </div>
+
+    <!-- Liste des clients -->
+    <div id="clientListSection">
+      <div id="clientList"></div>
+      <div id="clientEmpty" class="shell-empty-state">
+        <div class="icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        </div>
+        <h3>Aucun client enregistré</h3>
+        <p>Appuyez sur "Nouveau client" pour commencer l'enregistrement.</p>
+      </div>
+    </div>
+
+    <!-- Formulaire d'enregistrement (5 étapes) -->
+    <div id="clientForm" style="display:none">
+      <div class="progress-label" id="clientProgressLabel">Étape 1 / 5</div>
+      <div class="progress-wrap"><div class="progress-bar" id="clientProgressBar" style="width:20%"></div></div>
+      <div class="card">
+
+        <!-- Étape 1 : Grille numéros -->
+        <div id="clientStep1">
+          <div class="step-label">Étape 1 / 5 — Numéro</div>
+          <div style="font-size:0.76rem;color:var(--muted);margin-bottom:8px">Appuyez sur un numéro disponible</div>
+          <div class="num-grid" id="clientNumGrid"></div>
+          <div id="clientSelInfo" style="display:none;background:var(--field-soft);border-radius:12px;padding:10px 13px;margin-bottom:14px;font-size:0.83rem;color:var(--ink);line-height:1.7"></div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="clientBtnStep2" onclick="clientGoStep(2)" disabled style="opacity:0.4">Suivant →</button>
+          </div>
+        </div>
+
+        <!-- Étape 2 : Nom -->
+        <div id="clientStep2" style="display:none">
+          <div class="step-label">Étape 2 / 5 — Nom</div>
+          <div class="field">
+            <label>Infos automatiques</label>
+            <input type="text" id="clientAutoInfo" readonly>
+          </div>
+          <div class="field">
+            <label>Nom complet du client</label>
+            <input type="text" id="cNom" placeholder="Prénom et Nom…">
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-prev" onclick="clientGoStep(1)">← Retour</button>
+            <button class="btn btn-primary" onclick="clientGoStep(3)">Suivant →</button>
+          </div>
+        </div>
+
+        <!-- Étape 3 : Téléphone -->
+        <div id="clientStep3" style="display:none">
+          <div class="step-label">Étape 3 / 5 — Téléphone</div>
+          <div class="field">
+            <label>Numéro de téléphone</label>
+            <input type="tel" id="cNumero" placeholder="ex: 90092671" inputmode="tel">
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-prev" onclick="clientGoStep(2)">← Retour</button>
+            <button class="btn btn-primary" onclick="clientGoStep(4)">Suivant →</button>
+          </div>
+        </div>
+
+        <!-- Étape 4 : MAC + Localisation -->
+        <div id="clientStep4" style="display:none">
+          <div class="step-label">Étape 4 / 5 — MAC & Localisation</div>
+          <div class="field">
+            <label>Adresse MAC (4 caractères)</label>
+            <div class="field-hint">Lettres et chiffres, ex: A3F2</div>
+            <input type="text" id="cMAC" placeholder="A3F2" maxlength="4" style="text-transform:uppercase;letter-spacing:4px;font-size:1.3rem;font-weight:700">
+            <span class="field-error" id="cMACErr" style="display:none">Exactement 4 caractères alphanumériques requis</span>
+          </div>
+          <div class="field">
+            <label>Localisation</label>
+            <input type="text" id="cLocal" placeholder="ex: 865H+M…">
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-prev" onclick="clientGoStep(3)">← Retour</button>
+            <button class="btn btn-primary" onclick="clientValidateStep4()">Suivant →</button>
+          </div>
+        </div>
+
+        <!-- Étape 5 : Récap -->
+        <div id="clientStep5" style="display:none">
+          <div class="step-label">✅ Récapitulatif</div>
+          <div class="recap-card">
+            <div class="recap-title">📄 Fiche Client</div>
+            <div class="recap-row"><span class="recap-key">Agent</span>       <span class="recap-val purple" id="cr_agent"></span></div>
+            <div class="recap-row"><span class="recap-key">Agence</span>      <span class="recap-val purple" id="cr_agence"></span></div>
+            <div class="recap-row"><span class="recap-key">Base</span>        <span class="recap-val purple" id="cr_base"></span></div>
+            <div class="recap-row"><span class="recap-key">N°</span>          <span class="recap-val auto"   id="cr_num"></span></div>
+            <div class="recap-row"><span class="recap-key">Code</span>        <span class="recap-val auto"   id="cr_code"></span></div>
+            <div class="recap-row"><span class="recap-key">A. SSID</span>     <span class="recap-val auto"   id="cr_ssid"></span></div>
+            <div class="recap-row"><span class="recap-key">IP Client</span>   <span class="recap-val green"  id="cr_ip"></span></div>
+            <div class="recap-row"><span class="recap-key">Nom</span>         <span class="recap-val"        id="cr_nom"></span></div>
+            <div class="recap-row"><span class="recap-key">Téléphone</span>   <span class="recap-val"        id="cr_numero"></span></div>
+            <div class="recap-row"><span class="recap-key">Adresse MAC</span> <span class="recap-val green"  id="cr_mac"></span></div>
+            <div class="recap-row"><span class="recap-key">Localisation</span><span class="recap-val"        id="cr_local"></span></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-prev" onclick="clientGoStep(4)">← Modifier</button>
+            <button class="btn btn-confirm" id="clientSubmitBtn" onclick="submitClient()">✅ Confirmer</button>
+          </div>
+        </div>
+
+      </div><!-- /card -->
+    </div><!-- /clientForm -->
+
+    <!-- Succès enregistrement -->
+    <div id="clientSuccess" style="display:none" class="card" style="text-align:center;padding:20px 16px">
+      <div style="text-align:center;padding:10px 0">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--field-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--field)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h3 style="font-family:var(--font-display);color:var(--ink);margin-bottom:6px">Client enregistré !</h3>
+        <p id="cs_info" style="font-size:0.83rem;color:var(--muted);margin-bottom:18px"></p>
+        <button class="btn btn-primary" onclick="clientNextRegister()" style="margin-bottom:10px">➕ Client suivant</button>
+        <button class="btn btn-gray" onclick="clientBackToList()">← Retour à la liste</button>
+      </div>
+    </div>
+
+  </div><!-- /clientsScreen -->
+
+  <!-- ══ ÉCRAN COMPTES EN ATTENTE ══ -->
   <div class="shell-content" id="pendingScreen" style="display:none">
     <div class="section-header">
       <div>
@@ -129,46 +286,73 @@
         <div class="section-sub">Attribuez un rôle pour activer chaque compte</div>
       </div>
     </div>
-
-    <div id="pendingList" class="q-list"></div>
-
+    <div id="pendingList"></div>
     <div id="pendingEmpty" class="shell-empty-state">
       <div class="icon-wrap">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--field)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
       </div>
       <h3>Aucun compte en attente</h3>
       <p>Tous les comptes créés ont déjà un rôle attribué.</p>
     </div>
   </div>
 
-  <!-- ── Navigation basse ── -->
+  <!-- Bottom navigation -->
   <div class="bottom-nav">
     <button class="bottom-nav-item active" id="navAgenciesBtn" onclick="showAgenciesScreen()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
       <span>Agences</span>
     </button>
-    <button class="bottom-nav-item" id="navUsersBtn" onclick="showPendingScreen()" style="display:none; position:relative">
+    <button class="bottom-nav-item" id="navUsersBtn" onclick="showPendingScreen()" style="display:none;position:relative">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       <span>Comptes</span>
-      <span id="pendingBadge" style="display:none; position:absolute; top:-2px; right:18px; background:var(--alert); color:white; font-size:0.62rem; font-weight:700; min-width:16px; height:16px; border-radius:8px; align-items:center; justify-content:center; padding:0 4px;"></span>
+      <span id="pendingBadge" style="display:none;position:absolute;top:-2px;right:18px;background:var(--alert);color:white;font-size:0.62rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;align-items:center;justify-content:center;padding:0 4px"></span>
     </button>
   </div>
-</div>
+
+</div><!-- /appShell -->
 
 <!-- ══════════ MODAL — Nouvelle agence ══════════ -->
 <div class="modal-overlay" id="agencyModal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title">Nouvelle agence</div>
-    <div class="modal-sub">Le nom suffit — vos agences sont généralement nommées par ville ou quartier.</div>
+    <div class="modal-sub">Le nom suffit — généralement nommée par ville ou quartier.</div>
     <div class="field">
       <label>Nom de l'agence</label>
       <input type="text" id="newAgencyName" placeholder="ex: Agence Bè, Agence Adidogomé…">
-      <span class="field-error" id="agencyModalError" style="display:none">Le nom de l'agence est requis.</span>
+      <span class="field-error" id="agencyModalError" style="display:none"></span>
     </div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeAgencyModal()">Annuler</button>
       <button class="btn btn-primary" id="agencyModalSubmit" onclick="submitNewAgency()" style="margin-top:0">Créer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MODAL — Nouvelle base ══════════ -->
+<div class="modal-overlay" id="baseModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Nouvelle base</div>
+    <div class="modal-sub">Configurez la base et son adressage IP.</div>
+    <div class="field">
+      <label>Nom de la base</label>
+      <input type="text" id="newBaseName" placeholder="ex: Base Totsi, Quartier D5…">
+    </div>
+    <div class="field">
+      <label>Adresse IP de base</label>
+      <div class="field-hint">Format : X.X.X.0 — doit finir par .0</div>
+      <input type="text" id="newBaseIP" placeholder="ex: 172.20.0.0" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label>Rules (incrément IP)</label>
+      <div class="field-hint">ex: +1 → N°1 donne .2</div>
+      <input type="text" id="newBaseRules" placeholder="+1" inputmode="numeric">
+    </div>
+    <span class="field-error" id="baseModalError" style="display:none"></span>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeBaseModal()">Annuler</button>
+      <button class="btn btn-primary" id="baseModalSubmit" onclick="submitNewBase()" style="margin-top:0">Créer</button>
     </div>
   </div>
 </div>
@@ -182,19 +366,15 @@
       <div class="assign-person-name" id="assignName">—</div>
       <div class="assign-person-email" id="assignEmail">—</div>
     </div>
-
     <div class="field" style="margin-top:6px">
       <label>Rôle</label>
       <div class="role-options" id="roleOptions"></div>
     </div>
-
     <div class="field" id="assignAgencyField" style="display:none">
       <label>Agence de rattachement</label>
       <select id="assignAgencySelect"></select>
     </div>
-
     <span class="field-error" id="assignError" style="display:none"></span>
-
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeAssignModal()">Annuler</button>
       <button class="btn btn-primary" id="assignSubmitBtn" onclick="submitAssignRole()" style="margin-top:0">Activer le compte</button>
