@@ -248,3 +248,75 @@ body {
   font-size: 0.92rem; font-family: var(--font-body); background: var(--white); color: var(--ink); outline:none;
 }
 #assignAgencySelect:focus { border-color: var(--signal); }
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:0.78rem; font-weight:600; color:var(--signal);
+  cursor:pointer; margin-bottom:6px;
+}
+.breadcrumb:hover { text-decoration:underline; }
+
+/* ── BASE CARDS ── */
+.base-card {
+  display:flex; align-items:center; gap:13px; background:white;
+  border:1.5px solid var(--line); border-radius:16px; padding:14px 15px;
+  cursor:pointer; transition:border-color 0.15s, transform 0.1s, box-shadow 0.15s;
+  margin-bottom:10px;
+}
+.base-card:hover { border-color:var(--signal); box-shadow:0 2px 10px rgba(37,99,235,0.08); }
+.base-card:active { transform:scale(0.99); }
+.base-card-icon {
+  width:40px; height:40px; border-radius:11px; background:#EFF6FF; color:var(--signal);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.base-card-body { flex:1; min-width:0; }
+.base-card-name { font-weight:600; font-size:0.93rem; color:var(--ink); }
+.base-card-meta { font-size:0.75rem; color:var(--muted); margin-top:2px; font-family:var(--font-mono); }
+
+/* ── CLIENT ROWS ── */
+.client-row {
+  display:flex; align-items:center; gap:12px; background:white;
+  border-bottom:1px solid var(--line); padding:13px 16px;
+}
+.client-row:last-child { border-bottom:none; border-radius:0 0 14px 14px; }
+.client-row:first-child { border-radius:14px 14px 0 0; }
+#clientList { border:1.5px solid var(--line); border-radius:14px; overflow:hidden; }
+.client-row-num {
+  width:32px; height:32px; border-radius:9px; background:var(--field-soft); color:var(--field);
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.82rem; flex-shrink:0;
+}
+.client-row-body { flex:1; min-width:0; }
+.client-row-name { font-weight:600; font-size:0.9rem; color:var(--ink); }
+.client-row-meta { font-size:0.72rem; color:var(--muted); margin-top:2px; font-family:var(--font-mono); }
+.mono { font-family:var(--font-mono); }
+
+/* ── FORM progress ── */
+.progress-label { font-size:0.78rem; color:var(--muted); text-align:right; margin-bottom:5px; }
+.progress-wrap  { background:var(--line); border-radius:20px; height:7px; margin-bottom:16px; overflow:hidden; }
+.progress-bar   { background:var(--signal); height:100%; border-radius:20px; transition:width 0.3s; }
+
+/* ── NUM GRID in client form ── */
+.num-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin-bottom:14px; max-height:290px; overflow-y:auto; }
+.num-btn  { aspect-ratio:1; border:2px solid var(--line); border-radius:11px; background:white; font-size:0.76rem; font-weight:700; color:var(--signal); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; padding:3px 2px; transition:all 0.15s; }
+.num-btn .nb-num  { font-size:0.86rem; }
+.num-btn .nb-code { font-size:0.54rem; color:var(--muted); font-weight:600; }
+.num-btn:hover:not(.used) { background:var(--signal); color:white; border-color:var(--signal); }
+.num-btn:hover:not(.used) .nb-code { color:rgba(255,255,255,0.7); }
+.num-btn.selected { background:var(--signal); color:white; border-color:var(--signal); }
+.num-btn.selected .nb-code { color:rgba(255,255,255,0.7); }
+.num-btn.used { background:var(--paper); color:#b0bec5; border-color:var(--line); cursor:not-allowed; }
+.used-x { font-size:0.58rem; color:var(--field); }
+
+/* ── step-label badge ── */
+.step-label { display:inline-block; background:var(--field-soft); color:var(--field); font-size:0.74rem; font-weight:700; padding:4px 12px; border-radius:20px; margin-bottom:10px; }
+
+/* ── btn-prev ── */
+.btn-prev { background:var(--paper); color:var(--ink); border:1.5px solid var(--line); }
+
+/* ── btn-confirm ── */
+.btn-confirm { background:var(--field); color:white; }
+.btn-confirm:hover { background:#0a8a5c; }
+
+/* ── btn-gray ── */
+.btn-gray { background:var(--paper); color:var(--ink); border:1.5px solid var(--line); margin-top:0; }
